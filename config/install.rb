@@ -1,7 +1,7 @@
 $:<< File.join(File.dirname(__FILE__), 'stack')
 
 # Require the stack base
-%w(essential scm ruby_enterprise memcached postgresql mysql).each do |lib|
+%w(essential scm ruby_enterprise ruby_192 memcached postgresql mysql monit rails sqlite3).each do |lib|
   require lib
 end
 
@@ -15,8 +15,8 @@ end
 # These are enabled by default when you choose Apache, you can remove these dependencies within
 # stack/apache.rb
 
-require 'apache'
-# require 'nginx'
+#require 'apache'
+ require 'nginx'
 
 # What we're installing to your server
 # Take what you want, leave what you don't
@@ -24,9 +24,13 @@ require 'apache'
 policy :stack, :roles => :app do
   requires :webserver               # Apache or Nginx
   requires :appserver               # Passenger
-  requires :ruby_enterprise         # Ruby Enterprise edition
+  requires :ruby_192
+#  requires :ruby_enterprise         # Ruby Enterprise edition
   requires :database                # MySQL or Postgres, also installs rubygems for each
   requires :scm                     # Git
+  requires :monit                 # Monit
+  requires :rails
+  requires :sqlite
   #requires :memcached               # Memcached
   #requires :libmemcached            # Libmemcached
 end
@@ -44,8 +48,8 @@ deployment do
   # source based package installer defaults
   source do
     prefix   '/usr/local'
-    archives '/usr/local/sources'
-    builds   '/usr/local/build'
+    archives '/tmp'
+    builds   '/tmp'
   end
 end
 

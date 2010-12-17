@@ -1,0 +1,23 @@
+set daemon 30
+
+set logfile syslog facility log_daemon
+
+# email alerts
+set mailserver localhost
+set alert john@clearsfg.com
+
+# nginx
+
+check process nginx with pidfile /usr/local/nginx/logs/nginx.pid
+  start program = "/etc/init.d/nginx start"
+  stop program  = "/etc/init.d/nginx stop"
+
+  if failed port 80 protocol HTTP request / then restart
+  if 5 restarts with 5 cycles then timeout
+
+# MySQL
+#check host mysql with address 127.0.0.1
+#  start program = "/etc/init.d/mysql start"
+#  stop program  = "/etc/init.d/mysql stop"
+#  if failed port 3306 protocol MYSQL then restart
+

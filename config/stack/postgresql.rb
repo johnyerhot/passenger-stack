@@ -1,6 +1,6 @@
 package :postgres, :provides => :database do
   description 'PostgreSQL database'
-  apt %w( postgresql postgresql-client libpq-dev )
+  apt %w( postgresql postgresql-client libpq-dev libpq-dev)
   
   verify do
     has_executable 'psql'
@@ -11,11 +11,11 @@ end
  
 package :postgresql_driver, :provides => :ruby_database_driver do
   description 'Ruby PostgreSQL database driver'
-  gem 'postgres'
+  gem 'pg'
   
   verify do
-    has_gem 'postgres'
+    has_gem 'pg'
   end
   
-  requires :ruby_enterprise
+  requires :ruby_192
 end
